@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const db = require('./index')
 const allocation = require('../constant/allocation');
 
-const AllocationConfigModel = db.sequelize.define('allocation_config', {
+const AllocationConfigModel = db.sequelize.define('allocation_configs', {
   name: Sequelize.STRING,
   value: Sequelize.STRING,
 })

@@ -1,40 +1,47 @@
 const Sequelize = require('sequelize');
 const db = require('./index');
 const allocationConfig = require('./allocation_config')
+const allocation = require('../constant/allocation')
+const { CustomerModel } = require('./customer');
 
-const AgentModel = db.sequelize.define('agent', {
+const AgentModel = db.sequelize.define('agents', {
     name: Sequelize.STRING,
     email: Sequelize.STRING,
 });
 
+AgentModel.hasOne(CustomerModel);
+
 const findAllAgent = async () => await AgentModel.findAll();
 
-const findDetailAgent = (agentId) => AgentModel.findOne({
+const findDetailAgent = async (agentId) => await AgentModel.findOne({
     where: {
         id: agentId,
     }
 });
 
 const findAvailableAgent =  async () => {
-    const allocationAgentValue = await allocationConfig.findAllocationAgent();
-    console.log(allocationAgentValue);
+    const resAllocation = await allocationConfig.findAllocationAgent();
+    let allocationValue = allocation.AGENT_ALLOCATION;
+    if(resAllocation) {
+        allocationValue = resAllocation.value;
+    }
     const query = db.sequelize.query(`
         SELECT
         a.*,
         t.total
     FROM
-        agent a
+        agents a
         LEFT JOIN (
             SELECT
                 COUNT(b.id) as total,
                 b.agent_id
             FROM
-                customer b
+                customers b
             WHERE
                 b.agent_id IS NOT NULL
                 AND b.status = 'unserve'
                 GROUP BY b.agent_id) AS t ON t.agent_id = a.id
-    WHERE t.total < 2 OR t.total IS NULL
+    WHERE t.total < ${allocationValue} OR t.total IS NULL
     `, { type: db.sequelize.QueryTypes.SELECT });
     return query;
 };

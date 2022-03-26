@@ -2,7 +2,7 @@
 
 module.exports = {
   async up(queryInterface) {
-    await queryInterface.bulkInsert('agent', [{
+    await queryInterface.bulkInsert('agents', [{
       name: 'agent1',
       email: 'test-agent-1@nadysaptra.com',
     },{

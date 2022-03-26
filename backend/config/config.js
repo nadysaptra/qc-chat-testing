@@ -7,7 +7,10 @@ module.exports = {
     host: process.env.DB_HOST,
     dialect: 'mysql',
     logging: false,
-    use_env_variable: false
+    use_env_variable: false,
+    define: {
+        timestamps: false
+    }
   },
   test: {
     username: process.env.DB_USER,
@@ -16,7 +19,10 @@ module.exports = {
     host: process.env.DB_HOST,
     dialect: 'mysql',
     logging: false,
-    use_env_variable: false
+    use_env_variable: false,
+    define: {
+        timestamps: false
+    }
   },
   production: {
     username: process.env.DB_USER,
@@ -31,6 +37,9 @@ module.exports = {
       acquire: 30000,
       idle: 10000,
     },
-    use_env_variable: false
+    use_env_variable: false,
+    define: {
+        timestamps: false
+    }
   },
 }

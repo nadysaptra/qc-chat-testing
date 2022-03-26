@@ -2,7 +2,7 @@ const customerStatus = require('../constant/customerStatus');
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.createTable(
-            'customer',
+            'customers',
             {
                 id: {
                     type: Sequelize.INTEGER,
@@ -14,7 +14,7 @@ module.exports = {
                 agent_id: {
                     type: Sequelize.INTEGER,
                     references: {
-                        model: 'agent',
+                        model: 'agents',
                         key: 'id'
                     },
                     onUpdate: 'cascade',
@@ -26,6 +26,6 @@ module.exports = {
     },
 
     down: (queryInterface) => {
-        return queryInterface.dropTable('customer');
+        return queryInterface.dropTable('customers');
     }
 };

@@ -1,7 +1,7 @@
 module.exports = {
     up: (queryInterface, Sequelize) => {
         return queryInterface.createTable(
-            'allocation_config',
+            'allocation_configs',
             {
                 id: {
                     type: Sequelize.INTEGER,
@@ -15,6 +15,6 @@ module.exports = {
     },
 
     down: (queryInterface) => {
-        return queryInterface.dropTable('allocation_config');
+        return queryInterface.dropTable('allocation_configs');
     }
 };
