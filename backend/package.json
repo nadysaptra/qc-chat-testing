@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js -e ejs,js,css,html,jpg,png,scss",
+    "migrate": "sequelize db:migrate",
+    "seeder": "sequelize db:seed:all",
+    "sequelize-cli": "sequelize-cli",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,7 +15,9 @@
   "dependencies": {
     "express": "^4.17.3",
     "md5": "^2.3.0",
-    "mysql2": "^2.3.3"
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.17.0",
+    "sequelize-cli": "^6.4.1"
   },
   "devDependencies": {
     "eslint": "^8.12.0",

@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const usersModel = require('../database/models/customer');
+const customerModel = require('../models/customer');
 
 router.get('/', async function(req, res, next) {
   try {
-    res.json(await usersModel.getAllCustomers(req.query.page));
+    res.json(await customerModel.findAllCustomer());
   } catch (err) {
     console.error(`Error while getting users `, err.message);
     next(err);
