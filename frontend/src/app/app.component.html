@@ -1,0 +1,28 @@
+<div class="main" *ngIf="!isAuthenticated">
+  <p class="sign" align="center">Sign in</p>
+  <form class="form1" [formGroup]="loginForm" (submit)="register()">
+    <input class="un " type="email" align="center" formControlName="email" placeholder="email" />
+    <control-messages [control]="loginForm.get('email')"></control-messages>
+    <input class="un " type="text" align="center" formControlName="name" placeholder="name" />
+    <control-messages [control]="loginForm.get('name')"></control-messages>
+    <button class="submit" align="center" [disabled]="!loginForm.valid">Sign in</button>
+  </form>
+
+</div>
+<div *ngIf="isAuthenticated">
+  <nb-layout>
+    <nb-layout-column>
+      <nb-chat title="Qiscus simple chat - Customer">
+        <nb-chat-message *ngFor="let msg of messages" [type]="msg.type" [message]="msg.text" [reply]="msg.reply"
+          [sender]="msg.user.name" [date]="msg.date" [files]="msg.files" [quote]="msg.quote" [latitude]="msg.latitude"
+          [longitude]="msg.longitude" [avatar]="msg.user.avatar">
+        </nb-chat-message>
+
+        <nb-chat-form (send)="sendMessage($event)" [dropFiles]="true">
+        </nb-chat-form>
+      </nb-chat>
+    </nb-layout-column>
+  </nb-layout>
+
+  <button class="logout-btn" (click)="logout()">Logout</button>
+</div>
