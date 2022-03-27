@@ -1,4 +1,5 @@
 const express = require('express');
+const { UNSERVE } = require('../constant/customerStatus');
 const router = express.Router();
 const customerModel = require('../models/customer');
 
@@ -13,7 +14,9 @@ const customerModel = require('../models/customer');
  */
 router.post('/', async function(req, res, next) {
   try {
-    res.json(await customerModel.findAllCustomer());
+    let form = req.body;
+    form.status = UNSERVE;
+    res.json(await customerModel.saveCustomer(form));
   } catch (err) {
     console.error(`Error while getting users `, err.message);
     next(err);
