@@ -6,6 +6,7 @@ const authApi = require("./route/auth");
 const customerApi = require("./route/customer");
 const agentApi = require("./route/agent");
 const allocationApi = require("./route/allocation");
+const bodyParser = require('body-parser');
 
 swagger.swaggerInitialize(app)
 
@@ -15,6 +16,10 @@ var HTTP_PORT = 8000
 app.listen(HTTP_PORT, () => {
     console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
 });
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
 
 // Root endpoint
 app.get("/", (_, res) => {
