@@ -11,7 +11,7 @@ const CustomerModel = db.sequelize.define('customers', {
 
 const findAllCustomer = () => CustomerModel.findAll();
 const findCustomerById = (id) => CustomerModel.findOne({
-  attributes: ['status'],
+  attributes: ['name', 'email', 'agent_id', 'status'],
   where: {
     id: id
   }

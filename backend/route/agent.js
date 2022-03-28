@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const agentModel = require('../models/agent');
+const customerModel = require('../models/customer');
 
 /**
  * Get all agent
@@ -30,6 +31,31 @@ router.get('/available', async (req, res, next) => {
     try {
         const agent = await agentModel.findAvailableAgent();
         res.json(agent);
+    } catch (err) {
+        console.error(`Error while getting users `, err.message);
+        next(err);
+    }
+});
+
+/**
+ * Get agent detail by customer id
+ * @route GET /agent/customer/:id
+ * @group Agent
+ * @returns {Array} 200 - {data : { id: number, name: string, email: string }, status: 200}
+ * @returns {Error}  400 - Unexpected error
+ */
+router.get('/customer/:id', async (req, res, next) => {
+    try {
+        const {id} = req.params;
+        const customer = await customerModel.findCustomerById(id);
+        const agent = await agentModel.findDetailAgent(customer.agent_id);
+        res.json({
+           data: {
+               id: agent.id,
+               name: agent.name,
+               email: agent.email
+           }
+        });
     } catch (err) {
         console.error(`Error while getting users `, err.message);
         next(err);
