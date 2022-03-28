@@ -2,30 +2,13 @@ import { AgentService } from './../../config/agent.service';
 import { Injectable } from "@angular/core";
 import { AuthService } from "src/config/auth.service";
 import { CustomerService } from "src/config/customer.service";
+import { storageRoleKey, updateSession, updateSessionRole } from '../storage/session';
 
 @Injectable()
 export class AppService {
-    storageKey: string = 'qc-user'
+
     constructor(private authService: AuthService, private customerService: CustomerService, private agentService: AgentService) {
 
-    }
-    getCustomer() {
-        if (sessionStorage.getItem(this.storageKey) && sessionStorage.getItem(this.storageKey) !== "") {
-            return JSON.parse(sessionStorage.getItem(this.storageKey)!);
-        }
-        return {}
-    }
-
-    updateSession(f: { id: number; name: string; email: string; agent_id: number; status: string; }) {
-        sessionStorage.setItem(this.storageKey, JSON.stringify(f));
-    }
-
-    getCustomerStatus(): string {
-        if (sessionStorage.getItem(this.storageKey) && sessionStorage.getItem(this.storageKey) !== "") {
-            const session = JSON.parse(sessionStorage.getItem(this.storageKey)!);
-            return session.status;
-        }
-        return 'unserve';
     }
 
     async getDetailAgent(id: string): Promise<{ name: string; email: string } | undefined> {
@@ -34,17 +17,6 @@ export class AppService {
             return undefined;
         }
         return auth
-    }
-
-    removeCustomer() {
-        sessionStorage.removeItem(this.storageKey)
-    }
-
-    isSessionValid() {
-        if (sessionStorage.getItem(this.storageKey) && sessionStorage.getItem(this.storageKey) !== "") {
-            return true;
-        }
-        return false;
     }
 
     async saveCustomer(form: { name: string; email: string }): Promise<boolean | { id: number; name: string; email: string }> {
@@ -58,7 +30,8 @@ export class AppService {
         f.id = auth.id;
         f.status = 'unserve';
 
-        this.updateSession(f);
+        updateSession(f);
+        updateSessionRole('customer');
         return f;
     }
 

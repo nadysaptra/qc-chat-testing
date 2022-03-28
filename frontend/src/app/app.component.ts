@@ -7,6 +7,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ValidationService } from './helpers/form-helper';
 import { interval, Subscription } from 'rxjs';
 import { AppState, appState } from './app.state';
+import { getCustomer, isSessionValid, getCustomerStatus, updateSession, removeCustomer } from './storage/session';
 
 const INTERVAL_TIME = 5000; // 5 seconds
 
@@ -35,10 +36,10 @@ export class AppComponent {
   });
 
   constructor(private formBuilder: FormBuilder, private appService: AppService, private customerService: CustomerService) {
-    const session = this.appService.isSessionValid();
+    const session = isSessionValid();
     if (session) {
       this.state.isAuthenticated = true;
-      this.state.customer = this.appService.getCustomer();
+      this.state.customer = getCustomer();
       this.runStatusSubscription();
     }
   }
@@ -58,14 +59,14 @@ export class AppComponent {
   }
 
   runStatusSubscription() {
-    const getCustomerStatus = this.appService.getCustomerStatus();
+    const customerStatus = getCustomerStatus();
     const fetchDetailAgent = async () => {
       const agent = await this.appService.getDetailAgentByCustomerId(this.state.customer!.id);
       if (agent) {
         this.state.agent = agent;
       }
     }
-    if (getCustomerStatus === "unserve" && this.state.customer) {
+    if (customerStatus === "unserve" && this.state.customer) {
       const checkCustomerStatus = async () => {
         const customerStatusInsideInterval = await this.customerService.fetchCustomerStatus(this.state.customer!.id).toPromise().then((res: any) => res).catch(() => null);
         if (!customerStatusInsideInterval) {
@@ -75,7 +76,7 @@ export class AppComponent {
         switch (this.state.status) {
           case "served":
             this.customerStatusInterval.unsubscribe();
-            this.appService.updateSession(this.state.customer!)
+            updateSession(this.state.customer!)
             fetchDetailAgent();
             break;
           case "unserve":
@@ -96,8 +97,8 @@ export class AppComponent {
         checkCustomerStatus();
       });
     } else {
-      this.state.status = getCustomerStatus;
-      this.state.customer!.status = getCustomerStatus;
+      this.state.status = customerStatus;
+      this.state.customer!.status = customerStatus;
       fetchDetailAgent();
     }
   }
@@ -117,7 +118,7 @@ export class AppComponent {
   }
 
   logout() {
-    this.appService.removeCustomer();
+    removeCustomer();
     this.state.isAuthenticated = false;
     this.state.messages = [];
   }
