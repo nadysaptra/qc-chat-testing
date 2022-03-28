@@ -19,4 +19,5 @@
 # Development
 - run `npm start`
 
-
+# Documentation
+- open `domain/api-docs` for swagger documentation or `http://localhost:8000/api-docs` when developing
