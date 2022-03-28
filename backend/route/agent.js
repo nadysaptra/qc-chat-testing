@@ -96,7 +96,9 @@ router.post('/', guard.roleGuard, async (req, res, next) => {
  */
 router.patch('/:id', guard.roleGuard, async (req, res, next) => {
     try {
-        const agent = await agentModel.assign();
+        const {id} = req.params;
+        const {name, email} = req.body
+        const agent = await agentModel.updateAgent(id, name, email);
         res.json(agent);
     } catch (err) {
         console.error(`Error while getting users `, err.message);
@@ -115,7 +117,8 @@ router.patch('/:id', guard.roleGuard, async (req, res, next) => {
  */
 router.delete('/:id', guard.roleGuard, async (req, res, next) => {
     try {
-        const agent = await agentModel.assign();
+        const {id} = req.params;
+        const agent = await agentModel.deleteAgent(id);
         res.json(agent);
     } catch (err) {
         console.error(`Error while getting users `, err.message);
@@ -125,17 +128,19 @@ router.delete('/:id', guard.roleGuard, async (req, res, next) => {
 
 /**
  * Assign an agent to a customer
- * @route PUT /agent/{id}/assign/{customerId}
+ * @route PUT /agent/{id}
  * @group Agent
  * @param {string} id.query.required - id - eg: user@domain
- * @param {string} customerId.query.required - customer id.
+ * @param {string} customerId.body.required - customer id.
  * @returns {object} 200 - An array of user info
  * @returns {Error}  400 - Unexpected error
  */
-router.put('/asign', guard.roleGuard, async (req, res, next) => {
+router.put('/asign/:id', guard.roleGuard, async (req, res, next) => {
     try {
-        const agent = await agentModel.assign();
-        res.json(agent);
+        const {id} = req.params;
+        const {customerId} = req.body;
+        const customer = await customerModel.assignAgent(id, customerId);
+        res.json(customer);
     } catch (err) {
         console.error(`Error while getting users `, err.message);
         next(err);
@@ -153,8 +158,9 @@ router.put('/asign', guard.roleGuard, async (req, res, next) => {
  */
 router.patch('/:id/resolve', guard.roleGuard, async (req, res, next) => {
     try {
-        const agent = await agentModel.resolve();
-        res.json(agent);
+        const {id} = req.params;
+        const customer = await customerModel.resolve(id);
+        res.json(customer);
     } catch (err) {
         console.error(`Error while getting users `, err.message);
         next(err);

@@ -93,6 +93,30 @@ router.get('/queue', guard.roleGuard, async function(req, res, next) {
 });
 
 /**
+ * Get customer by agent id
+ * @route GET /customer/agent/{id}
+ * @group Customer
+ * @param {integer} id.path.required - id agent - ex: 1
+ * @returns {Array} 200 - { status: 200, data: customers: [] }
+ * @returns {Error}  400 - Unexpected error
+ */
+router.get('/agent/:id', guard.roleGuard, async function(req, res, next) {
+  try {
+    const {id} = req.params;
+    const customers = await customerModel.findAllCustomerByAgentId(id);
+    res.json({
+      data: {
+        customers
+      },
+      status: 200,
+    });
+  } catch (err) {
+    console.error(`Error while getting users `, err.message);
+    next(err);
+  }
+});
+
+/**
  * Get detail customer
  * @route GET /customer/:id
  * @group Customer

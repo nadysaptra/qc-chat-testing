@@ -10,6 +10,12 @@ const CustomerModel = db.sequelize.define('customers', {
 })
 
 const findAllCustomer = () => CustomerModel.findAll();
+const findAllCustomerByAgentId = (id) => CustomerModel.findAll({
+  attributes: ['name', 'email', 'agent_id', 'status'],
+  where: {
+    agent_id: id
+  }
+});
 const findCustomerById = (id) => CustomerModel.findOne({
   attributes: ['name', 'email', 'agent_id', 'status'],
   where: {
@@ -19,9 +25,29 @@ const findCustomerById = (id) => CustomerModel.findOne({
 
 const saveCustomer = (form) => CustomerModel.create(form)
 
+const assignAgent = (agentId, customerId) => CustomerModel.update({
+  agent_id: agentId
+}, {
+  where: {
+    id: customerId
+  }
+})
+
+const resolve = (id) => CustomerModel.update({
+  status: customerStatus.RESOLVED
+}, {
+  where: {
+    id: id
+  }
+})
+
+
 module.exports = {
     CustomerModel,
     findAllCustomer,
     saveCustomer,
-    findCustomerById
+    findCustomerById,
+    assignAgent,
+    resolve,
+    findAllCustomerByAgentId
 }
