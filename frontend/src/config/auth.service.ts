@@ -10,4 +10,12 @@ export class AuthService {
     authenticate(form: { name: string; email: string }) {
         return this.http.post(BASE_URL, form);
     }
+
+    authenticateAgent(form: { email: string; }) {
+        return this.http.post(`${BASE_URL}/agent`, form)
+    }
+
+    authenticateSupervisor(form: { email: string; }) {
+        return this.http.post(`${BASE_URL}/supervisor`, form)
+    }
 }

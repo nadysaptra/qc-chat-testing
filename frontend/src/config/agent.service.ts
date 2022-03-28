@@ -23,4 +23,8 @@ export class AgentService {
     fetchDetailAgentByCustomerId(id: number) {
         return this.http.get(`${BASE_URL}/customer/${id}`);
     }
+
+    assignAgentToCustomer(id: number, customerId: number) {
+        return this.http.put(`${BASE_URL}/assign/${id}/customer/${customerId}`, {});
+    }
 }
