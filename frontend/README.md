@@ -5,6 +5,19 @@ This project was base on Angular v12.2.1.
 ## Environment Variable
 - API_URL - do `export API_URL=http://localhost:8000` on your terminal
 
+## Available URL
+- `http://localhost:4200` will act as customer / user
+- `http://localhost:4200/#/agent` will act as agent
+- `http://localhost:4200/#/supervisor` will act as supervisor
+
+###
+- customer will be the one to initiate chat, just fill the form `name, email`
+> ![alt text](screenshot/as_agent.jpg)
+- agent will act as a customer service-ish
+> ![alt text](screenshot/as_customer.jpg)
+- supervisor will act as PIC to assign agent to handle customer
+> ![alt text](screenshot/as_supervisor.jpg)
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
