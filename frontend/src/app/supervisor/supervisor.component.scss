@@ -1,0 +1,242 @@
+@import "https://fonts.googleapis.com/css?family=Ubuntu";
+
+body {
+  background-color: #F3EBF6;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.main {
+  background-color: #FFFFFF;
+  width: 400px;
+  height: 400px;
+  margin: 7em auto;
+  border-radius: 1.5em;
+  box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);
+}
+
+.sign {
+  padding-top: 40px;
+  color: #8C55AA;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: bold;
+  font-size: 23px;
+}
+
+.un {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  margin-bottom: 50px;
+  margin-left: 46px;
+  text-align: center;
+  margin-bottom: 27px;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+form.form1 {
+  padding-top: 40px;
+}
+
+.pass {
+  width: 76%;
+  color: rgb(38, 50, 56);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1px;
+  background: rgba(136, 126, 126, 0.04);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  outline: none;
+  box-sizing: border-box;
+  border: 2px solid rgba(0, 0, 0, 0.02);
+  margin-bottom: 50px;
+  margin-left: 46px;
+  text-align: center;
+  margin-bottom: 27px;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+
+.un:focus,
+.pass:focus {
+  border: 2px solid rgba(0, 0, 0, 0.18) !important;
+
+}
+
+.submit {
+  cursor: pointer;
+  border-radius: 5em;
+  color: #fff;
+  background: linear-gradient(to right, #9C27B0, #E040FB);
+  border: 0;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  font-family: 'Ubuntu', sans-serif;
+  margin-left: 35%;
+  font-size: 13px;
+  box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+}
+
+.forgot {
+  text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+  color: #E1BEE7;
+  padding-top: 15px;
+}
+
+a {
+  text-shadow: 0px 0px 3px rgba(117, 117, 117, 0.12);
+  text-decoration: none;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+@media (max-width: 600px) {
+  .main {
+    border-radius: 0px;
+  }
+}
+
+button:disabled {
+  background: gray;
+}
+
+.panel-container {
+  position: absolute;
+  top: 0;
+  font-family: Open Sans, sans-serif;
+  width: 300px;
+
+  .subpanel {
+    background: #a4c8ff;
+    color: white;
+    padding: 1rem;
+    border-radius: 0 1rem 1rem 0;
+  }
+
+  button.logout-btn {
+    padding: 1rem;
+    margin: 1rem;
+    background-color: #ff3344;
+    color: white;
+    border-radius: 0.5rem;
+    border: 0px;
+  }
+
+}
+
+
+.wrapper {
+  width: 25rem;
+  height: 70vh;
+  margin: 2rem;
+  margin-top: 15vh;
+  font-size: 1.5rem;
+  float: left;
+  flex: 1;
+}
+
+p,
+a,
+h1 {
+  padding: 1rem;
+  display: block;
+  font-family: 'Ubuntu', sans-serif;
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+html {
+  background-color: #eee;
+  font-family: Calibri;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 0.2rem;
+  box-shadow: 0px 0px 0.1rem rgba(0, 0, 0, 0.3), 0px 0.2rem 0.2rem rgba(0, 0, 0, 0.3);
+  overflow: auto;
+}
+
+.mat_list {
+  list-style-type: none;
+  display: block;
+  height: 100%;
+}
+
+.mat_list>li {
+  margin-top: -1px;
+  width: 100%;
+  max-height: 100%;
+  transition: max-height 0.5s;
+  overflow: hidden;
+  display: flex;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  font-family: 'Ubuntu', sans-serif;
+
+  button {
+    padding: 0 0.25rem;
+    background-color: #3366ff;
+    color: white;
+    border: 0;
+    border-radius: 0.25rem;
+  }
+}
+
+.mat_list>li.hide {
+  max-height: 0px;
+}
+
+.mat_list_title {
+  background-color: #36f;
+  color: white;
+}
+
+.mat_list_title[style*="background"] {
+  height: 10rem;
+  position: relative;
+  background-size: cover;
+  background-position: center center;
+}
+
+.mat_list_title>h1 {
+  font-size: 2rem;
+  font-weight: 100;
+}
+
+.mat_list_title[style*="background"]>h1 {
+  position: absolute;
+  bottom: 0px;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.served, .unserve, .resolved {
+  padding: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: 1rem;
+}
+.served {
+  color: white;
+  background-color: teal;
+}
+.unserve {
+  background-color: yellow;
+}
+.resolved {
+  background-color: greenyellow;
+}

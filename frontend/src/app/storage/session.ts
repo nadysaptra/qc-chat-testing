@@ -3,7 +3,7 @@ import { AgentInterface } from "../interface/agent.interface";
 export const storageKey: string = 'qc-user';
 export const storageRoleKey = 'qc-user-role';
 
-export const getCustomer = () => {
+export const getUser = () => {
     if (sessionStorage.getItem(storageKey) && sessionStorage.getItem(storageKey) !== "") {
         return JSON.parse(sessionStorage.getItem(storageKey)!);
     }

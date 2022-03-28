@@ -1,0 +1,1 @@
+export interface CustomerInterface { id: number; name: string; email: string; agent_id: number; status: string; }

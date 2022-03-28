@@ -1,0 +1,1 @@
+export interface SupervisorInterface { id: number; name: string; email: string; }

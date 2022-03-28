@@ -1,20 +1,20 @@
-import { AuthService } from './../config/auth.service';
-import { AgentService } from './../config/agent.service';
-import { CustomerService } from './../config/customer.service';
-import { AppService } from './service/app.service';
+import { AuthService } from '../../config/auth.service';
+import { AgentService } from '../../config/agent.service';
+import { CustomerService } from '../../config/customer.service';
+import { AppService } from '../service/app.service';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ValidationService } from './helpers/form-helper';
+import { ValidationService } from '../helpers/form-helper';
 import { interval, Subscription } from 'rxjs';
-import { AppState, appState } from './app.state';
-import { getCustomer, isSessionValid, getCustomerStatus, updateSession, removeCustomer } from './storage/session';
+import { AppState, appState } from '../app.state';
+import { getUser, isSessionValid, getCustomerStatus, updateSession, removeCustomer } from '../storage/session';
 
 const INTERVAL_TIME = 5000; // 5 seconds
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'app-customer',
+  templateUrl: './customer.component.html',
+  styleUrls: ['./customer.component.scss'],
   providers: [AppService, CustomerService, AgentService, AuthService],
   styles: [`
     ::ng-deep nb-layout-column {
@@ -26,7 +26,7 @@ const INTERVAL_TIME = 5000; // 5 seconds
     }
   `],
 })
-export class AppComponent {
+export class CustomerComponent {
   state: AppState = appState;
   customerStatusInterval: Subscription = new Subscription();
 
@@ -39,7 +39,7 @@ export class AppComponent {
     const session = isSessionValid();
     if (session) {
       this.state.isAuthenticated = true;
-      this.state.customer = getCustomer();
+      this.state.customer = getUser();
       this.runStatusSubscription();
     }
   }

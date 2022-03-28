@@ -1,0 +1,25 @@
+<div class="main" *ngIf="!state.isAuthenticated">
+  <p class="sign" align="center">Sign in as Agent</p>
+  <form class="form1" [formGroup]="loginForm" (submit)="register()">
+    <input class="un " type="email" align="center" formControlName="email" placeholder="email" />
+    <control-messages [control]="loginForm.get('email')"></control-messages>
+    <button class="submit" align="center" [disabled]="!loginForm.valid">Sign in</button>
+  </form>
+
+</div>
+<div *ngIf="state.isAuthenticated" style="display: flex">
+  <div class="wrapper">
+    <ul class="mat_list card scrollable">
+      <div class="mat_list_title">
+        <h1>Customer List</h1>
+      </div>
+      <ng-container *ngFor="let item of state.customers">
+        <li><p>{{ item.email }} <span [ngClass]="item.status">{{ item.status }}</span></p> <button *ngIf="item.status == 'served'" (click)="resolve(item.id!)">Resolved</button></li>
+      </ng-container>
+    </ul>
+  </div>
+
+  <div class="panel-container">
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</div>

@@ -1,7 +1,6 @@
 import { AbstractControl } from '@angular/forms';
 import { Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ValidationService } from './helpers/form-helper';
+import { ValidationService } from '../helpers/form-helper';
 
 @Component({
   selector: 'control-messages',
