@@ -10,10 +10,18 @@ const CustomerModel = db.sequelize.define('customers', {
 })
 
 const findAllCustomer = () => CustomerModel.findAll();
+const findCustomerById = (id) => CustomerModel.findOne({
+  attributes: ['status'],
+  where: {
+    id: id
+  }
+});
+
 const saveCustomer = (form) => CustomerModel.create(form)
 
 module.exports = {
     CustomerModel,
     findAllCustomer,
-    saveCustomer
+    saveCustomer,
+    findCustomerById
 }

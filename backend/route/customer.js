@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const customerModel = require('../models/customer');
+const agentModel = require('../models/agent');
+const { AGENT_ALLOCATION } = require('../constant/allocation');
+const allocationConfigModel = require('../models/allocation_config');
 
 /**
  * Get all customer
@@ -10,22 +13,6 @@ const customerModel = require('../models/customer');
  * @returns {Error}  400 - Unexpected error
  */
 router.get('/', async function(req, res, next) {
-  try {
-    res.json(await customerModel.findAllCustomer());
-  } catch (err) {
-    console.error(`Error while getting users `, err.message);
-    next(err);
-  }
-});
-
-/**
- * Get detail customer
- * @route GET /customer/:id
- * @group Customer
- * @returns {Array} 200 - { id: number, name: string, email: string, agent_id: integer, status: enum('UNSERVE', 'SERVE', 'RESOLVE') }
- * @returns {Error}  400 - Unexpected error
- */
-router.get('/:id', async function(req, res, next) {
   try {
     res.json(await customerModel.findAllCustomer());
   } catch (err) {
@@ -52,14 +39,70 @@ router.get('/check-session', async function(req, res, next) {
 
 /**
  * Check status of serve | unserve | resolve
- * @route GET /customer/check-status
+ * @route GET /customer/:id/status
  * @group Customer
- * @returns {Array} 200 - { valid: true | false }
+ * @returns {Array} 200 - { status: 200, data: {status: "serve" } }
  * @returns {Error}  400 - Unexpected error
  */
-router.get('/check-status', async function(req, res, next) {
+router.get('/:id/status', async function(req, res, next) {
   try {
-    res.json(await customerModel.findAllCustomer());
+    const {id} = req.params;
+    const resQuery = await customerModel.findCustomerById(id);
+    res.json({
+      data: {
+        status: resQuery.status
+      },
+      status: 200,
+    });
+  } catch (err) {
+    console.error(`Error while getting users `, err.message);
+    next(err);
+  }
+});
+
+/**
+ * Check remaining queue
+ * @route GET /customer/queue
+ * @group Customer
+ * @returns {Array} 200 - { status: 200, data: {queue: 1} }
+ * @returns {Error}  400 - Unexpected error
+ */
+router.get('/queue', async function(req, res, next) {
+  try {
+    let queue = 0;
+    const allocation = (await allocationConfigModel.findAllocationAgent()).value || AGENT_ALLOCATION;
+    let availableAgent = await agentModel.findAvailableAgent();
+    availableAgent = availableAgent
+      .filter((v) => v.total < allocation)
+      .sort((a, b) => a.total - b.total);
+    // * find only remaining queue
+    if(availableAgent && availableAgent.length > 0) {
+      queue = availableAgent[0].total;
+    }
+    res.json({
+      data: {
+        queue
+      },
+      status: 200,
+    });
+  } catch (err) {
+    console.error(`Error while getting users `, err.message);
+    next(err);
+  }
+});
+
+/**
+ * Get detail customer
+ * @route GET /customer/:id
+ * @group Customer
+ * @returns {Array} 200 - { id: number, name: string, email: string, agent_id: integer, status: enum('UNSERVE', 'SERVE', 'RESOLVE') }
+ * @returns {Error}  400 - Unexpected error
+ * this function must be on bottom of file
+ */
+router.get('/:id', async function(req, res, next) {
+  try {
+    const {id} = req.params;
+    res.json(await customerModel.findCustomerById(id));
   } catch (err) {
     console.error(`Error while getting users `, err.message);
     next(err);

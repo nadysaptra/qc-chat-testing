@@ -28,7 +28,7 @@ const findAvailableAgent =  async () => {
     const query = db.sequelize.query(`
         SELECT
         a.*,
-        t.total
+        IFNULL(t.total, 0) as total
     FROM
         agents a
         LEFT JOIN (
