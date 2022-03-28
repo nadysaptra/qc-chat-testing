@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const agentModel = require('../models/agent');
+const guard = require('./guard/role')
 
 /**
  * Get all allocation
@@ -25,7 +26,7 @@ router.get('/', async function (req, res, next) {
  * @returns {Array} 200 - { id: number, name: string, value: string }
  * @returns {Error}  400 - Unexpected error
  */
-router.get('/:key', async function (req, res, next) {
+router.get('/:key', guard.roleGuard, async function (req, res, next) {
     try {
         res.json(agentModel.findAllAgent());
     } catch (err) {
@@ -41,7 +42,7 @@ router.get('/:key', async function (req, res, next) {
  * @returns {Array} 200 - [{ id: number, name: string, value: string }]
  * @returns {Error}  400 - Unexpected error
  */
-router.patch('/:key', async function (req, res, next) {
+router.patch('/:key', guard.roleGuard, async function (req, res, next) {
     try {
         res.json(agentModel.findAllAgent());
     } catch (err) {

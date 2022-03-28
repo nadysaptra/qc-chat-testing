@@ -13,9 +13,16 @@ const swaggerInitialize = (app) => {
             basePath: '/v1',
             produces: [
                 "application/json",
-                "application/xml"
             ],
             schemes: ['http', 'https'],
+            securityDefinitions: {
+                CUSTOM: {
+                    type: 'apiKey',
+                    in: 'header',
+                    name: 'x-role',
+                    description: "Role of Login user. Ex: customer | agent | supervisor",
+                },
+            },
         },
         basedir: __dirname, //app absolute path
         files: ['../route/**/*.js'] //Path to the API handle folder

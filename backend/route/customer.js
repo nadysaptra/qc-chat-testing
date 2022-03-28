@@ -4,6 +4,7 @@ const customerModel = require('../models/customer');
 const agentModel = require('../models/agent');
 const { AGENT_ALLOCATION } = require('../constant/allocation');
 const allocationConfigModel = require('../models/allocation_config');
+const guard = require('./guard/role')
 
 /**
  * Get all customer
@@ -28,7 +29,7 @@ router.get('/', async function(req, res, next) {
  * @returns {Array} 200 - { valid: true | false }
  * @returns {Error}  400 - Unexpected error
  */
-router.get('/check-session', async function(req, res, next) {
+router.get('/check-session', guard.roleGuard, async function(req, res, next) {
   try {
     res.json(await customerModel.findAllCustomer());
   } catch (err) {
@@ -44,7 +45,7 @@ router.get('/check-session', async function(req, res, next) {
  * @returns {Array} 200 - { status: 200, data: {status: "serve" } }
  * @returns {Error}  400 - Unexpected error
  */
-router.get('/:id/status', async function(req, res, next) {
+router.get('/:id/status', guard.roleGuard, async function(req, res, next) {
   try {
     const {id} = req.params;
     const resQuery = await customerModel.findCustomerById(id);
@@ -67,7 +68,7 @@ router.get('/:id/status', async function(req, res, next) {
  * @returns {Array} 200 - { status: 200, data: {queue: 1} }
  * @returns {Error}  400 - Unexpected error
  */
-router.get('/queue', async function(req, res, next) {
+router.get('/queue', guard.roleGuard, async function(req, res, next) {
   try {
     let queue = 0;
     const allocation = (await allocationConfigModel.findAllocationAgent()).value || AGENT_ALLOCATION;
@@ -99,7 +100,7 @@ router.get('/queue', async function(req, res, next) {
  * @returns {Error}  400 - Unexpected error
  * this function must be on bottom of file
  */
-router.get('/:id', async function(req, res, next) {
+router.get('/:id', guard.roleGuard, async function(req, res, next) {
   try {
     const {id} = req.params;
     res.json(await customerModel.findCustomerById(id));
