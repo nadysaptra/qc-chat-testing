@@ -23,25 +23,10 @@ router.get('/', async function(req, res, next) {
 });
 
 /**
- * Check session
- * @route GET /customer/check-session
- * @group Customer
- * @returns {Array} 200 - { valid: true | false }
- * @returns {Error}  400 - Unexpected error
- */
-router.get('/check-session', guard.roleGuard, async function(req, res, next) {
-  try {
-    res.json(await customerModel.findAllCustomer());
-  } catch (err) {
-    console.error(`Error while getting users `, err.message);
-    next(err);
-  }
-});
-
-/**
  * Check status of serve | unserve | resolve
- * @route GET /customer/:id/status
+ * @route GET /customer/{id}/status
  * @group Customer
+ * @param {integer} id.path.required - id customer - ex: 1
  * @returns {Array} 200 - { status: 200, data: {status: "serve" } }
  * @returns {Error}  400 - Unexpected error
  */
@@ -96,7 +81,7 @@ router.get('/queue', guard.roleGuard, async function(req, res, next) {
  * Get customer by agent id
  * @route GET /customer/agent/{id}
  * @group Customer
- * @param {integer} id.path.required - id agent - ex: 1
+ * @param {integer} id.path.required - id customer - ex: 1
  * @returns {Array} 200 - { status: 200, data: customers: [] }
  * @returns {Error}  400 - Unexpected error
  */
@@ -117,9 +102,29 @@ router.get('/agent/:id', guard.roleGuard, async function(req, res, next) {
 });
 
 /**
- * Get detail customer
- * @route GET /customer/:id
+ * Resolve Customer
+ * @route PATCH /customer/{id}/resolve
  * @group Customer
+ * @param {string} id.path.required - id customer - eg: 1
+ * @returns {object} 200 - An array of user info
+ * @returns {Error}  400 - Unexpected error
+ */
+router.patch('/:id/resolve', guard.roleGuard, async (req, res, next) => {
+    try {
+        const {id} = req.params;
+        const customer = await customerModel.resolve(id);
+        res.json(customer);
+    } catch (err) {
+        console.error(`Error while getting users `, err.message);
+        next(err);
+    }
+});
+
+/**
+ * Get detail customer
+ * @route GET /customer/{id}
+ * @group Customer
+ * @param {integer} id.path.required - id customer - ex: 1
  * @returns {Array} 200 - { id: number, name: string, email: string, agent_id: integer, status: enum('UNSERVE', 'SERVE', 'RESOLVE') }
  * @returns {Error}  400 - Unexpected error
  * this function must be on bottom of file

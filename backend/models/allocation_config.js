@@ -14,7 +14,16 @@ const findAllocationAgent = () => AllocationConfigModel.findOne({
     }
 });
 
+const updateAllocationAgent = (name, value) => AllocationConfigModel.update({
+    value
+},{
+    where: {
+        name: allocation.AGENT_ALLOCATION
+    }
+});
+
 module.exports = {
     AllocationConfigModel,
-    findAllocationAgent
+    findAllocationAgent,
+    updateAllocationAgent
 }

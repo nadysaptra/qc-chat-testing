@@ -25,6 +25,11 @@ const findDetailAgent = async (agentId) => await AgentModel.findOne({
     }
 });
 
+const createAgent = async (id, name, email) => await AgentModel.create({
+    name,
+    email
+});
+
 const updateAgent = async (id, name, email) => await AgentModel.update({
     name,
     email
@@ -76,6 +81,7 @@ module.exports = {
     findAllAgent,
     findDetailAgent,
     findAvailableAgent,
+    createAgent,
     updateAgent,
     deleteAgent,
     authAgent
