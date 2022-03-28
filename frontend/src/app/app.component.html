@@ -1,4 +1,4 @@
-<div class="main" *ngIf="!isAuthenticated">
+<div class="main" *ngIf="!state.isAuthenticated">
   <p class="sign" align="center">Sign in</p>
   <form class="form1" [formGroup]="loginForm" (submit)="register()">
     <input class="un " type="email" align="center" formControlName="email" placeholder="email" />
@@ -9,11 +9,11 @@
   </form>
 
 </div>
-<div *ngIf="isAuthenticated">
+<div *ngIf="state.isAuthenticated">
   <nb-layout>
     <nb-layout-column>
       <nb-chat title="Qiscus simple chat - Customer">
-        <nb-chat-message *ngFor="let msg of messages" [type]="msg.type" [message]="msg.text" [reply]="msg.reply"
+        <nb-chat-message *ngFor="let msg of state.messages" [type]="msg.type" [message]="msg.text" [reply]="msg.reply"
           [sender]="msg.user.name" [date]="msg.date" [files]="msg.files" [quote]="msg.quote" [latitude]="msg.latitude"
           [longitude]="msg.longitude" [avatar]="msg.user.avatar">
         </nb-chat-message>
@@ -24,5 +24,19 @@
     </nb-layout-column>
   </nb-layout>
 
-  <button class="logout-btn" (click)="logout()">Logout</button>
+  <div class="panel-container">
+    <ng-container *ngIf="state.status == 'unserve'">
+      <div class="subpanel">
+        <h4>Youre Queue</h4>
+        <h1>{{ state.queue }}</h1>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="state.status == 'serve'">
+      <div class="subpanel">
+        <h4>Agent</h4>
+        <h1>{{ state.agent?.name }}</h1>
+      </div>
+    </ng-container>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
 </div>

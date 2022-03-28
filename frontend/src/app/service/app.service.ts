@@ -1,10 +1,11 @@
+import { AgentService } from './../../config/agent.service';
 import { Injectable } from "@angular/core";
 import { AuthService } from "src/config/auth.service";
 import { CustomerService } from "src/config/customer.service";
 
 @Injectable()
 export class AppService {
-    constructor(private authService: AuthService, private customerService: CustomerService) {
+    constructor(private authService: AuthService, private customerService: CustomerService, private agentService: AgentService) {
 
     }
     storageKey: string = 'qc-user'
@@ -15,16 +16,20 @@ export class AppService {
         return {}
     }
 
-    getCustomerStatus() {
-
+    getCustomerStatus(): string {
+        if (sessionStorage.getItem(this.storageKey) && sessionStorage.getItem(this.storageKey) !== "") {
+            const session = JSON.parse(sessionStorage.getItem(this.storageKey)!);
+            return session.status;
+        }
+        return 'unserve';
     }
 
-    getAgentStatus() {
-
-    }
-
-    isCustomerServed() {
-
+    async getDetailAgent(id: string): Promise<{ name: string; email: string } | undefined> {
+        const auth: any | null = await this.agentService.fetchDetailAgent(id).toPromise().catch(() => null);
+        if (!auth) {
+            return undefined;
+        }
+        return auth
     }
 
     removeCustomer() {
@@ -38,13 +43,35 @@ export class AppService {
         return false;
     }
 
-    async saveCustomer(form: { name: string; email: string }) {
-        const auth = await this.authService.authenticate(form).toPromise();
-        if (auth) {
-            sessionStorage.setItem(this.storageKey, JSON.stringify(form));
-            return true;
+    async saveCustomer(form: { name: string; email: string }): Promise<boolean | { id: number; name: string; email: string }> {
+        const auth: any | null = await this.authService.authenticate(form).toPromise().catch(() => null);
+        if (!auth) {
+            return false;
         }
-        return false;
+        let f = {
+            ...form
+        } as { id: number; name: string; email: string, status: string; };
+        f.id = auth.id;
+        f.status = 'unserve';
+
+        sessionStorage.setItem(this.storageKey, JSON.stringify(f));
+        return f;
+    }
+
+    async getDetailAgentByCustomerId(id: number) {
+        const agent: any | null = await this.agentService.fetchDetailAgentByCustomerId(id).toPromise().catch(() => null);
+        if (!agent) {
+            return undefined;
+        }
+        return agent;
+    }
+
+    async getRemainingQueue() {
+        const queue: any | null = await this.customerService.fetchCustomerRemainingQueue().toPromise().catch(() => null);
+        if (!queue) {
+            return null;
+        }
+        return queue.data.queue;
     }
 
 }

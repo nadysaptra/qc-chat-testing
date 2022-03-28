@@ -111,15 +111,26 @@ button:disabled {
   background: gray;
 }
 
-button.logout-btn {
+.panel-container {
   position: absolute;
   top: 0;
-  padding: 1rem;
-  margin: 1rem;
   margin-top: 3rem;
-  background-color: #3366ff;
-  color: white;
-  border-radius: 0.5rem;
-  border: 0px;
   font-family: Open Sans, sans-serif;
+  width: 300px;
+
+  .subpanel {
+    background: #a4c8ff;
+    color: white;
+    padding: 1rem;
+  }
+
+  button.logout-btn {
+    padding: 1rem;
+    margin: 1rem;
+    background-color: #ff3344;
+    color: white;
+    border-radius: 0.5rem;
+    border: 0px;
+  }
+
 }

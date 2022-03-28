@@ -15,4 +15,12 @@ export class AgentService {
     fetchAvailableAgent() {
         return this.http.get(BASE_URL + '/available');
     }
+
+    fetchDetailAgent(id: string) {
+        return this.http.get(BASE_URL + '/' + id);
+    }
+
+    fetchDetailAgentByCustomerId(id: number) {
+        return this.http.get(`${BASE_URL}/customer/${id}`);
+    }
 }

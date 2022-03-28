@@ -8,11 +8,12 @@ const BASE_URL = environment.API_URL + '/v1/customer';
 export class CustomerService {
     constructor(private http: HttpClient) { }
 
-    fetchAllAgent() {
-        return this.http.get(BASE_URL);
+    fetchCustomerStatus(id: number) {
+        return this.http.get(BASE_URL + '/' + id + '/status');
     }
 
-    fetchAvailableAgent() {
-        return this.http.get(BASE_URL + '/available');
+    fetchCustomerRemainingQueue() {
+        return this.http.get(BASE_URL + '/queue');
     }
+
 }
