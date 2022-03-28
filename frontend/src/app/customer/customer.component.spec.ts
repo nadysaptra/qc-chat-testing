@@ -1,4 +1,11 @@
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { NbThemeModule, NbLayoutModule, NbChatModule } from '@nebular/theme';
+import { SharedModule } from '../shared/shared.module';
+import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';
 
 describe('CustomerComponent', () => {
@@ -7,6 +14,22 @@ describe('CustomerComponent', () => {
       declarations: [
         CustomerComponent
       ],
+      imports: [
+
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CustomerRoutingModule,
+        SharedModule,
+
+        NbThemeModule.forRoot({ name: 'default' }),
+        NbLayoutModule,
+        NbEvaIconsModule,
+        NbChatModule.forChild(),
+
+
+        HttpClientModule,
+      ]
     }).compileComponents();
   });
 
@@ -16,10 +39,4 @@ describe('CustomerComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(CustomerComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('qc-chat app is running!');
-  });
 });
