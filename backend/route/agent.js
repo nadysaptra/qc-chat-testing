@@ -76,7 +76,10 @@ router.get('/customer/:id', async (req, res, next) => {
  */
 router.post('/', guard.roleGuard, async (req, res, next) => {
     try {
-        const {name, email} = req.body
+        const {
+            name,
+            email
+        } = req.body
         const agent = await agentModel.createAgent(name, email);
         res.json(agent);
     } catch (err) {
@@ -95,8 +98,13 @@ router.post('/', guard.roleGuard, async (req, res, next) => {
  */
 router.patch('/:id', guard.roleGuard, async (req, res, next) => {
     try {
-        const {id} = req.params;
-        const {name, email} = req.body
+        const {
+            id
+        } = req.params;
+        const {
+            name,
+            email
+        } = req.body
         const agent = await agentModel.updateAgent(id, name, email);
         res.json(agent);
     } catch (err) {
@@ -116,7 +124,9 @@ router.patch('/:id', guard.roleGuard, async (req, res, next) => {
  */
 router.delete('/:id', guard.roleGuard, async (req, res, next) => {
     try {
-        const {id} = req.params;
+        const {
+            id
+        } = req.params;
         const agent = await agentModel.deleteAgent(id);
         res.json(agent);
     } catch (err) {
@@ -127,18 +137,30 @@ router.delete('/:id', guard.roleGuard, async (req, res, next) => {
 
 /**
  * Assign an agent to a customer
- * @route PUT /agent/{id}
+ * @route PUT /agent/assign/{id}/customer/{customerId}
  * @group Agent
  * @param {integer} id.path.required - id - eg: 1
  * @param {integer} customerId.path.required - customer id - eg: 1
- * @returns {object} 200 - An array of user info
- * @returns {Error}  400 - Unexpected error
+ * @returns {object} 200 - {status: 200}
+ * @returns {Error}  400 - {status: 400, message: 'unexpected error'}
  */
-router.put('/asign/:id/customer/:customerId', guard.roleGuard, async (req, res, next) => {
+router.put('/assign/:id/customer/:customerId', guard.roleGuard, async (req, res, next) => {
     try {
-        const {id, customerId} = req.params;
+        const {
+            id,
+            customerId
+        } = req.params;
         const customer = await customerModel.assignAgent(id, customerId);
-        res.json(customer);
+        if (customer) {
+            res.json({
+                status: 200
+            });
+            return;
+        }
+        res.json({
+            status: 400,
+            message: 'unexpected error'
+        });
     } catch (err) {
         console.error(`Error while getting users `, err.message);
         next(err);

@@ -29,7 +29,8 @@ const findCustomerById = (id) => CustomerModel.findOne({
 const saveCustomer = (form) => CustomerModel.create(form)
 
 const assignAgent = (agentId, customerId) => CustomerModel.update({
-  agent_id: agentId
+  agent_id: agentId,
+  status: customerStatus.SERVED
 }, {
   where: {
     id: customerId

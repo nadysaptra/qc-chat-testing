@@ -5,6 +5,7 @@ const allocation = require('../constant/allocation')
 const {
     CustomerModel
 } = require('./customer');
+const { SERVED } = require('../constant/customerStatus');
 
 const AgentModel = db.sequelize.define('agents', {
     name: Sequelize.STRING,
@@ -52,8 +53,8 @@ const findAvailableAgent = async () => {
     if (resAllocation) {
         allocationValue = resAllocation.value;
     }
-    const query = db.sequelize.query(`
-        SELECT
+    const sql = `
+    SELECT
         a.*,
         IFNULL(t.total, 0) as total
     FROM
@@ -66,10 +67,11 @@ const findAvailableAgent = async () => {
                 customers b
             WHERE
                 b.agent_id IS NOT NULL
-                AND b.status = 'unserve'
+                AND b.status = '${SERVED}'
                 GROUP BY b.agent_id) AS t ON t.agent_id = a.id
     WHERE t.total < ${allocationValue} OR t.total IS NULL
-    `, {
+    `;
+    const query = db.sequelize.query(sql, {
         type: db.sequelize.QueryTypes.SELECT
     });
     return query;
