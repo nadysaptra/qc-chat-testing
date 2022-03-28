@@ -11,7 +11,7 @@
     - DB_USER
     - DB_PASS
     - DB_HOST
-    > To use it type in your command line `export DB_NAME=testing-qiscus-db`
+    > To use it type in your command line `export DB_NAME=testing-qc-db`
 - run `npm install` or `yarn install`
 - run `npm run migrate`
 - run `npm run seeder`
