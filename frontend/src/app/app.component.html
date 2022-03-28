@@ -31,10 +31,11 @@
         <h1>{{ state.queue }}</h1>
       </div>
     </ng-container>
-    <ng-container *ngIf="state.status == 'serve'">
+    <ng-container *ngIf="state.status == 'served'">
       <div class="subpanel">
         <h4>Agent</h4>
-        <h1>{{ state.agent?.name }}</h1>
+        <p>{{ state.agent?.name }}</p>
+        <p>{{ state.agent?.email }}</p>
       </div>
     </ng-container>
     <button class="logout-btn" (click)="logout()">Logout</button>

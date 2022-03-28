@@ -52,13 +52,19 @@ export class AppComponent {
     }
     if (saveRes) {
       this.state.isAuthenticated = true;
-      this.state.customer = saveRes as { id: number; name: string; email: string };
+      this.state.customer = saveRes as { id: number; name: string; email: string; agent_id: number; status: string; };
       this.runStatusSubscription();
     }
   }
 
   runStatusSubscription() {
     const getCustomerStatus = this.appService.getCustomerStatus();
+    const fetchDetailAgent = async () => {
+      const agent = await this.appService.getDetailAgentByCustomerId(this.state.customer!.id);
+      if (agent) {
+        this.state.agent = agent;
+      }
+    }
     if (getCustomerStatus === "unserve" && this.state.customer) {
       const checkCustomerStatus = async () => {
         const customerStatusInsideInterval = await this.customerService.fetchCustomerStatus(this.state.customer!.id).toPromise().then((res: any) => res).catch(() => null);
@@ -69,10 +75,8 @@ export class AppComponent {
         switch (this.state.status) {
           case "served":
             this.customerStatusInterval.unsubscribe();
-            const agent = await this.appService.getDetailAgentByCustomerId(this.state.customer!.id);
-            if (agent) {
-              this.state.agent = agent;
-            }
+            this.appService.updateSession(this.state.customer!)
+            fetchDetailAgent();
             break;
           case "unserve":
             const queue = await this.appService.getRemainingQueue();
@@ -91,6 +95,10 @@ export class AppComponent {
       this.customerStatusInterval = source.subscribe(() => {
         checkCustomerStatus();
       });
+    } else {
+      this.state.status = getCustomerStatus;
+      this.state.customer!.status = getCustomerStatus;
+      fetchDetailAgent();
     }
   }
 

@@ -5,15 +5,19 @@ import { CustomerService } from "src/config/customer.service";
 
 @Injectable()
 export class AppService {
+    storageKey: string = 'qc-user'
     constructor(private authService: AuthService, private customerService: CustomerService, private agentService: AgentService) {
 
     }
-    storageKey: string = 'qc-user'
     getCustomer() {
         if (sessionStorage.getItem(this.storageKey) && sessionStorage.getItem(this.storageKey) !== "") {
             return JSON.parse(sessionStorage.getItem(this.storageKey)!);
         }
         return {}
+    }
+
+    updateSession(f: { id: number; name: string; email: string; agent_id: number; status: string; }) {
+        sessionStorage.setItem(this.storageKey, JSON.stringify(f));
     }
 
     getCustomerStatus(): string {
@@ -50,11 +54,11 @@ export class AppService {
         }
         let f = {
             ...form
-        } as { id: number; name: string; email: string, status: string; };
+        } as { id: number; name: string; email: string, status: string; agent_id: number; };
         f.id = auth.id;
         f.status = 'unserve';
 
-        sessionStorage.setItem(this.storageKey, JSON.stringify(f));
+        this.updateSession(f);
         return f;
     }
 
@@ -63,7 +67,7 @@ export class AppService {
         if (!agent) {
             return undefined;
         }
-        return agent;
+        return agent.data;
     }
 
     async getRemainingQueue() {
