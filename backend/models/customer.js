@@ -9,9 +9,12 @@ const CustomerModel = db.sequelize.define('customers', {
   status: Sequelize.ENUM([customerStatus.UNSERVE, customerStatus.SERVED, customerStatus.RESOLVED])
 })
 
-const findAllCustomer = () => CustomerModel.findAll();
+const findAllCustomer = () => CustomerModel.findAll({
+  attributes: ['id', 'name', 'email', 'agent_id', 'status'],
+});
+
 const findAllCustomerByAgentId = (id) => CustomerModel.findAll({
-  attributes: ['name', 'email', 'agent_id', 'status'],
+  attributes: ['id', 'name', 'email', 'agent_id', 'status'],
   where: {
     agent_id: id
   }
