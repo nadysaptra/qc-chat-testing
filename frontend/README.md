@@ -1,6 +1,8 @@
 # QcChat
 
 This project was base on Angular v12.2.1.
+- nebular ![alt text](https://akveo.github.io/nebular/docs/guides/install-nebular#using-angular-cli)
+- material design
 
 ## Environment Variable
 - API_URL - do `export API_URL=http://localhost:8000` on your terminal
